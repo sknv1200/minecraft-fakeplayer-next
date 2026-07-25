@@ -1,15 +1,15 @@
 <!--
   Modified by yigemingzii, July 2026
-  - Added fork notice linking to original tanyaofei/minecraft-fakeplayer
+  - Added original-project attribution linking to tanyaofei/minecraft-fakeplayer
   - Updated supported versions (1.21.x sub-versions, 26.1.2)
   - Documented the CommandAPI 11.2.0 requirement for Minecraft 26.1.x
   - Clarified licensing and attribution
 -->
-# FakePlayer - 假人插件
+# Minecraft FakePlayer Next - 假人插件
 
 [English](README.md) | 简体中文
 
-> 本仓库是 [tanyaofei/minecraft-fakeplayer](https://github.com/tanyaofei/minecraft-fakeplayer) 的个人 fork，遵循 Apache 2.0 许可证。
+> 本项目是基于 [tanyaofei/minecraft-fakeplayer](https://github.com/tanyaofei/minecraft-fakeplayer) 的独立维护后续版本，遵循 Apache 2.0 许可证。
 
 这个插件模拟出真实的玩家来保证区块的加载以及怪物的生成，生电服利器。
 
@@ -251,5 +251,5 @@ allow-commands:
 
 本项目采用 [Apache License 2.0](LICENSE.txt) 许可证，归属信息见 [NOTICE](NOTICE)。
 
-原项目由 [tanyaofei（hello09x）及其贡献者](https://github.com/tanyaofei/minecraft-fakeplayer) 开发。本 fork 的修改部分 Copyright 2026 yigemingzii。
+原项目由 [tanyaofei（hello09x）及其贡献者](https://github.com/tanyaofei/minecraft-fakeplayer) 开发。Minecraft FakePlayer Next 的修改部分 Copyright 2026 yigemingzii。
 

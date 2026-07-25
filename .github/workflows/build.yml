@@ -45,16 +45,18 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ~/.m2/repository/org/spigotmc
-          key: spigot-remapped-${{ runner.os }}-v1-1.20.1-1.20.2-1.20.4-1.20.6-1.21.1-1.21.3-1.21.4-1.21.5-1.21.6-1.21.8-1.21.10
+          key: spigot-remapped-${{ runner.os }}-v2-1.20.1-1.20.2-1.20.4-1.20.6-1.21.1-1.21.3-1.21.4-1.21.5-1.21.6-1.21.8-1.21.10-1.21.11
 
       - name: Download BuildTools
         run: curl -sL -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
 
       - name: Build spigot remapped-mojang dependencies
         run: |
-          for version in 1.20.1 1.20.2 1.20.4 1.20.6 1.21.1 1.21.3 1.21.4 1.21.5 1.21.6 1.21.8 1.21.10; do
-            D="$HOME/.m2/repository/org/spigotmc/spigot/$version-R0.1-SNAPSHOT"
-            JAR="$D/spigot-$version-R0.1-SNAPSHOT-remapped-mojang.jar"
+          for version in 1.20.1 1.20.2 1.20.4 1.20.6 1.21.1 1.21.3 1.21.4 1.21.5 1.21.6 1.21.8 1.21.10 1.21.11; do
+            snapshot="R0.1-SNAPSHOT"
+            [ "$version" = "1.21.11" ] && snapshot="R0.2-SNAPSHOT"
+            D="$HOME/.m2/repository/org/spigotmc/spigot/$version-$snapshot"
+            JAR="$D/spigot-$version-$snapshot-remapped-mojang.jar"
             if [ -f "$JAR" ]; then
               echo "[skip] spigot $version (cached)"
             else
@@ -84,12 +86,19 @@ jobs:
 
       - name: Prepare dependencies
         run: |
-          mkdir -p lib versions/26.1.2
+          mkdir -p lib versions/26.1.2 versions/26.2
           if [ ! -f versions/26.1.2/paper-26.1.2.jar ]; then
             curl -sL -o lib/paper-26.1.2-server.jar \
               "https://fill-data.papermc.io/v1/objects/1d70b1dab9cf4a6de615209a536f3a45a2186240253c428213ce2188ab95e5f7/paper-26.1.2-74.jar"
             $JDK25_HOME/bin/java -jar lib/paper-26.1.2-server.jar --help || true
           fi
+          if [ ! -f versions/26.2/paper-26.2.jar ]; then
+            curl -sL -o lib/paper-26.2-server.jar \
+              "https://fill-data.papermc.io/v1/objects/825963b3c22103c7501382d5d365b960a830e3f9c79d9aa2b06f32ad1a98659f/paper-26.2-68.jar"
+            $JDK25_HOME/bin/java -jar lib/paper-26.2-server.jar --help || true
+          fi
+          test -f versions/26.1.2/paper-26.1.2.jar
+          test -f versions/26.2/paper-26.2.jar
           [ -f lib/OpenInv.jar ] || curl -sL -o lib/OpenInv.jar \
             "https://cdn.modrinth.com/data/1UlvXbzL/versions/eRnnClIe/OpenInv.jar"
           [ -f lib/PlaceholderAPI-2.11.6.jar ] || curl -sL -o lib/PlaceholderAPI-2.11.6.jar \
@@ -99,14 +108,14 @@ jobs:
         run: |
           MODULES="fakeplayer-v1_20_1,fakeplayer-v1_20_2,fakeplayer-v1_20_3,fakeplayer-v1_20_4,fakeplayer-v1_20_5,fakeplayer-v1_20_6,"
           MODULES="$MODULES fakeplayer-v1_21,fakeplayer-v1_21_1,fakeplayer-v1_21_3,fakeplayer-v1_21_4,fakeplayer-v1_21_5,"
-          MODULES="$MODULES fakeplayer-v1_21_6,fakeplayer-v1_21_7,fakeplayer-v1_21_8,fakeplayer-v1_21_9,fakeplayer-v1_21_10"
+          MODULES="$MODULES fakeplayer-v1_21_6,fakeplayer-v1_21_7,fakeplayer-v1_21_8,fakeplayer-v1_21_9,fakeplayer-v1_21_10,fakeplayer-v1_21_11"
           MODULES=$(echo "$MODULES" | tr -d ' ')
           mvn install -pl "$MODULES" -am -Drevision=${{ env.REVISION }} -DskipTests --no-transfer-progress
 
-      - name: Install v26_1_2 (JDK 25)
+      - name: Install 26.x modules (JDK 25)
         run: |
           export JAVA_HOME=$JDK25_HOME
-          mvn install -pl fakeplayer-v26_1_2 -Drevision=${{ env.REVISION }} -DskipTests --no-transfer-progress
+          mvn install -pl fakeplayer-v26_1_2,fakeplayer-v26_2 -Drevision=${{ env.REVISION }} -DskipTests --no-transfer-progress
 
       - name: Package final jar (shade)
         run: |
@@ -121,7 +130,10 @@ jobs:
             io/github/hello09x/devtools/core/utils/Exceptions.class \
             com/google/inject/Guice.class \
             com/zaxxer/hikari/HikariDataSource.class \
+            io/github/hello09x/fakeplayer/v1_21_10/spi/NMSBridgeImpl.class \
+            io/github/hello09x/fakeplayer/v1_21_11/spi/NMSBridgeImpl.class \
             io/github/hello09x/fakeplayer/v26_1_2/spi/NMSBridgeImpl.class \
+            io/github/hello09x/fakeplayer/v26_2/spi/NMSBridgeImpl.class \
             META-INF/LICENSE.txt \
             META-INF/NOTICE; do
             grep -Fxq "$entry" target/fakeplayer-contents.txt || {

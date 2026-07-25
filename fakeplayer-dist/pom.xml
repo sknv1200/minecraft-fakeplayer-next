@@ -4,6 +4,7 @@
   - Added fakeplayer-v26_1_2 dependency and copy target
   - Declared shaded runtime dependencies directly
   - Included project license and attribution files in the distribution jar
+  - Added Minecraft 1.21.11 and 26.2 dependencies and copy targets
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -149,7 +150,17 @@
         </dependency>
         <dependency>
             <groupId>io.github.hello09x.fakeplayer</groupId>
+            <artifactId>fakeplayer-v1_21_11</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.hello09x.fakeplayer</groupId>
             <artifactId>fakeplayer-v26_1_2</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.hello09x.fakeplayer</groupId>
+            <artifactId>fakeplayer-v26_2</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>
@@ -270,7 +281,17 @@
                                         <include name="fakeplayer-${revision}.jar"/>
                                     </fileset>
                                 </copy>
+                                <copy tofile="../server-1.21.11/plugins/fakeplayer.jar">
+                                    <fileset dir="${project.build.directory}">
+                                        <include name="fakeplayer-${revision}.jar"/>
+                                    </fileset>
+                                </copy>
                                 <copy tofile="../server-26.1.2/plugins/fakeplayer.jar">
+                                    <fileset dir="${project.build.directory}">
+                                        <include name="fakeplayer-${revision}.jar"/>
+                                    </fileset>
+                                </copy>
+                                <copy tofile="../server-26.2/plugins/fakeplayer.jar">
                                     <fileset dir="${project.build.directory}">
                                         <include name="fakeplayer-${revision}.jar"/>
                                     </fileset>

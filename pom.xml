@@ -8,6 +8,7 @@
   - Flattened CI-friendly versions in installed Maven POMs
   - Added licensing, contributor, and source repository metadata
   - Updated project identity and repository URL after leaving the fork network
+  - Added Minecraft 1.21.11 and 26.2 modules
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -75,7 +76,9 @@
         <module>fakeplayer-v1_21_8</module>
         <module>fakeplayer-v1_21_9</module>
         <module>fakeplayer-v1_21_10</module>
+        <module>fakeplayer-v1_21_11</module>
         <module>fakeplayer-v26_1_2</module>
+        <module>fakeplayer-v26_2</module>
     </modules>
 
     <properties>

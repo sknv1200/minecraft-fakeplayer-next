@@ -1,7 +1,7 @@
 <!--
   Modified by yigemingzii, July 2026
   - Added original-project attribution linking to tanyaofei/minecraft-fakeplayer
-  - Updated supported versions (1.21.x sub-versions, 26.1.2)
+  - Updated supported versions (1.21.11 and 26.2)
   - Documented the CommandAPI 11.2.0 requirement for Minecraft 26.1.x
   - Clarified licensing and attribution
 -->
@@ -17,11 +17,11 @@
 
 仅支持 `Paper` 及其下游如 (`Purpur`) 核心，所有测试均在 `Purpur` 进行，因此 `Purpur` 的兼容性最高
 
-要求使用 JAVA 21 及以上
+要求使用 Java 21 及以上，Minecraft `26.x` 需要 Java 25
 
 + 支持 `1.20`, `1.20.2`, `1.20.3`, `1.20.4`, `1.20.5`, `1.20.6`
-+ 支持 `1.21`, `1.21.1`, `1.21.3`, `1.21.4`, `1.21.5`, `1.21.6`, `1.21.7`, `1.21.8`, `1.21.9`, `1.21.10`
-+ 支持 `26.1.2`
++ 支持 `1.21`, `1.21.1`, `1.21.3`, `1.21.4`, `1.21.5`, `1.21.6`, `1.21.7`, `1.21.8`, `1.21.9`, `1.21.10`, `1.21.11`
++ 支持 `26.1.2`, `26.2`（26.2 当前基于 Paper build 68 Beta）
 
 ## 特性
 

@@ -19,7 +19,7 @@
 
 - **No Maven wrapper** — `mvn` must be installed separately
 - **Build the final jar**: `mvn package -pl fakeplayer-dist`
-- **Compile a single NMS module**: `mvn compile -pl fakeplayer-v26_1_2 -am`
+- **Compile a single NMS module**: `mvn compile -pl fakeplayer-v26_2 -am`
 - **No tests** exist in the project
 
 ## Architecture
@@ -33,7 +33,7 @@ fakeplayer-core     → Plugin logic (commands, managers, listeners, Guice DI)
 fakeplayer-dist     → Shade bundle: depends on core + every NMS module, shaded via maven-shade-plugin
 fakeplayer-v1_20_x  \
 fakeplayer-v1_21_x   } NMS implementations per Minecraft version
-fakeplayer-v26_1_2   /
+fakeplayer-v26_x     /
 ```
 
 **ServiceLoader**: `fakeplayer-dist/src/main/resources/META-INF/services/io.github.hello09x.fakeplayer.api.spi.NMSBridge` lists every NMS provider. When adding a new version module, this file and `fakeplayer-dist/pom.xml` must both be updated.
@@ -42,18 +42,18 @@ fakeplayer-v26_1_2   /
 
 ### 1.21.x modules (with Spigot remapping)
 
-- Depend on `org.spigotmc:spigot:<version>-R0.1-SNAPSHOT:remapped-mojang` (built via [BuildTools](https://www.spigotmc.org/wiki/buildtools/))
+- Depend on `org.spigotmc:spigot:<version>-R0.x-SNAPSHOT:remapped-mojang` (built via [BuildTools](https://www.spigotmc.org/wiki/buildtools/)); 1.21.11 uses `R0.2-SNAPSHOT`
 - Use `specialsource-maven-plugin` to remap: mojang → obf → spigot
 - **CraftBukkit package**: `org.bukkit.craftbukkit.v1_XX_RX`
-- **Cascade**: newer minor versions import from the previous one (e.g. v1_21_10 imports `v1_21_9.spi.*`), only the newest base module contains the full implementation
+- **Cascade**: 1.21.9 and 1.21.10 share the R6 implementation; 1.21.11 is a complete R7 implementation because the CraftBukkit package changed
 
 ### 26.x modules (unobfuscated, Mojang-mapped)
 
 - **No specialsource, no spigot jars** — Mojang removed obfuscation in 26.1
-- Compile against the Paper server jar: `system` scope → `versions/26.1.2/paper-26.1.2.jar`
-- Generate the jar by running `java -jar lib/paper-26.1.2-server.jar --help` (paperclip self-extracts)
+- Compile against the matching Paper server jar under `versions/<version>/paper-<version>.jar`
+- Generate the jar by running the matching `lib/paper-<version>-server.jar` paperclip with `--help`
 - **CraftBukkit package**: `org.bukkit.craftbukkit` — **no version suffix** (changed in 1.20.5)
-- `ChatVisiblity` typo still present in 26.1.2
+- `ChatVisiblity` typo is still present in the supported 26.x APIs
 - Contains complete self-contained implementation (does not cascade from a 1.21.x module)
 
 ## Adding a new NMS version module
@@ -67,7 +67,7 @@ fakeplayer-v26_1_2   /
 
 ## License (Apache 2.0)
 
-This is a fork of [tanyaofei/minecraft-fakeplayer](https://github.com/tanyaofei/minecraft-fakeplayer).
+This is an independently maintained continuation of [tanyaofei/minecraft-fakeplayer](https://github.com/tanyaofei/minecraft-fakeplayer).
 
 - **Modified original files**: must carry "Modified by …" notice at top
 - **New files**: must carry `Copyright 2026 yigemingzii` + full Apache 2.0 header

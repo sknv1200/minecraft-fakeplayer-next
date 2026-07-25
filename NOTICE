@@ -12,10 +12,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-Minecraft FakePlayer is based on the original project developed by
+Minecraft FakePlayer Next is based on the original project developed by
 tanyaofei (hello09x) and contributors:
 https://github.com/tanyaofei/minecraft-fakeplayer
 
-This fork is maintained by yigemingzii and contains modifications for
-additional Minecraft versions, build tooling, and distribution metadata:
-https://github.com/yigemingzii/minecraft-fakeplayer
+This independently maintained continuation contains modifications by
+yigemingzii for additional Minecraft versions, build tooling, and
+distribution metadata:
+https://github.com/yigemingzii/minecraft-fakeplayer-next

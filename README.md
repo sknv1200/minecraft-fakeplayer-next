@@ -1,17 +1,17 @@
 <!--
   Modified by yigemingzii, July 2026
-  - Added fork notice linking to original tanyaofei/minecraft-fakeplayer
+  - Added original-project attribution linking to tanyaofei/minecraft-fakeplayer
   - Updated supported versions to include 26.1.2
   - Documented the CommandAPI 11.2.0 requirement for Minecraft 26.1.x
   - Clarified licensing and attribution
 -->
-# FakePlayer
+# Minecraft FakePlayer Next
 
 ![BANNER_IMAGE](.github/README/BANNER.png)
 
 English | [简体中文](README_zh.md)
 
-> This repository is a fork of [tanyaofei/minecraft-fakeplayer](https://github.com/tanyaofei/minecraft-fakeplayer), maintained by yigemingzii under the Apache License 2.0.
+> This project is an independently maintained continuation of [tanyaofei/minecraft-fakeplayer](https://github.com/tanyaofei/minecraft-fakeplayer), licensed under the Apache License 2.0.
 
 This is a server side plugin inspired by [Carpet-Mod](https://github.com/gnembon/fabric-carpet) for Minecraft `1.20.x`, `1.21.x` and `26.1.x`.
 
@@ -214,6 +214,6 @@ See the [introduction](./BUILD.md).
 
 Licensed under the [Apache License 2.0](LICENSE.txt). See [NOTICE](NOTICE) for attribution.
 
-The original project was developed by [tanyaofei (hello09x) and contributors](https://github.com/tanyaofei/minecraft-fakeplayer). Fork modifications are Copyright 2026 yigemingzii.
+The original project was developed by [tanyaofei (hello09x) and contributors](https://github.com/tanyaofei/minecraft-fakeplayer). Modifications in Minecraft FakePlayer Next are Copyright 2026 yigemingzii.
 
 

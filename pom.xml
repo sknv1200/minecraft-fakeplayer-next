@@ -6,7 +6,8 @@
   - Updated CommandAPI 11.0.0 -> 11.2.0 for Minecraft 26.1 support
   - Enabled annotation processing for JDK 25 builds
   - Flattened CI-friendly versions in installed Maven POMs
-  - Added fork licensing, contributor, and source repository metadata
+  - Added licensing, contributor, and source repository metadata
+  - Updated project identity and repository URL after leaving the fork network
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -20,7 +21,7 @@
 
     <name>fakeplayer-parent</name>
     <description>Multi-version fake player plugin for Paper and compatible Minecraft servers</description>
-    <url>https://github.com/yigemingzii/minecraft-fakeplayer</url>
+    <url>https://github.com/yigemingzii/minecraft-fakeplayer-next</url>
 
     <licenses>
         <license>
@@ -43,15 +44,15 @@
             <name>yigemingzii</name>
             <email>159773423+yigemingzii@users.noreply.github.com</email>
             <roles>
-                <role>Fork maintainer</role>
+                <role>Project maintainer</role>
             </roles>
         </developer>
     </developers>
 
     <scm>
-        <connection>scm:git:https://github.com/yigemingzii/minecraft-fakeplayer.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/yigemingzii/minecraft-fakeplayer.git</developerConnection>
-        <url>https://github.com/yigemingzii/minecraft-fakeplayer</url>
+        <connection>scm:git:https://github.com/yigemingzii/minecraft-fakeplayer-next.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/yigemingzii/minecraft-fakeplayer-next.git</developerConnection>
+        <url>https://github.com/yigemingzii/minecraft-fakeplayer-next</url>
     </scm>
 
     <modules>

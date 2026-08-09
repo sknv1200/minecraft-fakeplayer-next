@@ -1,3 +1,7 @@
+/*
+ * Modified by yigemingzii, August 2026
+ * - Opened the fake player inventory GUI from the root and gui commands
+ */
 package io.github.hello09x.fakeplayer.core.command;
 
 import com.google.inject.Inject;
@@ -11,6 +15,7 @@ import io.github.hello09x.fakeplayer.api.spi.ActionType;
 import io.github.hello09x.fakeplayer.core.command.impl.*;
 import io.github.hello09x.fakeplayer.core.config.FakeplayerConfig;
 import io.github.hello09x.fakeplayer.core.constant.Direction;
+import io.github.hello09x.fakeplayer.core.gui.FakeplayerGui;
 import io.github.hello09x.fakeplayer.core.repository.model.Feature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -79,6 +84,8 @@ public class CommandRegistry {
     private DebugCommand debugCommand;
     @Inject
     private StopCommand stopCommand;
+    @Inject
+    private FakeplayerGui fakeplayerGui;
 
     @Inject
     private FakeplayerConfig config;
@@ -96,6 +103,10 @@ public class CommandRegistry {
                 )
                 .withPermission(Permission.spawn)
                 .withSubcommands(
+                        command("gui")
+                                .withPermission(Permission.spawn)
+                                .withShortDescription("fakeplayer.command.gui.description")
+                                .executesPlayer(fakeplayerGui::openCommand),
                         command("select")
                                 .withPermission(Permission.select)
                                 .withShortDescription("fakeplayer.command.select.description")
@@ -459,7 +470,8 @@ public class CommandRegistry {
                                                 .executes(debugCommand::sendPluginMessage)
                                 )
 
-                );
+                )
+                .executesPlayer(fakeplayerGui::openCommand);
         HelpCommand.generateHelpCommand(root, true);
         root.register();
     }

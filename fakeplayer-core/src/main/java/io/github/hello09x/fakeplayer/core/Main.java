@@ -1,3 +1,7 @@
+/*
+ * Modified by yigemingzii, August 2026
+ * - Registered the fake player inventory GUI listener
+ */
 package io.github.hello09x.fakeplayer.core;
 
 import com.google.inject.Guice;
@@ -10,6 +14,7 @@ import io.github.hello09x.devtools.core.utils.Exceptions;
 import io.github.hello09x.devtools.database.DatabaseModule;
 import io.github.hello09x.fakeplayer.core.command.CommandRegistry;
 import io.github.hello09x.fakeplayer.core.config.FakeplayerConfig;
+import io.github.hello09x.fakeplayer.core.gui.FakeplayerGui;
 import io.github.hello09x.fakeplayer.core.listener.FakeplayerLifecycleListener;
 import io.github.hello09x.fakeplayer.core.listener.FakeplayerListener;
 import io.github.hello09x.fakeplayer.core.listener.PlayerListener;
@@ -66,6 +71,7 @@ public final class Main extends JavaPlugin {
             manager.registerEvents(injector.getInstance(FakeplayerAutofishManager.class), this);
             manager.registerEvents(injector.getInstance(FakeplayerReplenishManager.class), this);
             manager.registerEvents(injector.getInstance(InvseeManager.class), this);
+            manager.registerEvents(injector.getInstance(FakeplayerGui.class), this);
         }
 
         {

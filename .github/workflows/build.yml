@@ -21,7 +21,7 @@ on:
   workflow_dispatch:
 
 env:
-  REVISION: 0.4.1
+  REVISION: 0.4.2
 
 jobs:
   build:
@@ -130,10 +130,13 @@ jobs:
             io/github/hello09x/devtools/core/utils/Exceptions.class \
             com/google/inject/Guice.class \
             com/zaxxer/hikari/HikariDataSource.class \
+            io/github/hello09x/fakeplayer/core/gui/FakeplayerGui.class \
             io/github/hello09x/fakeplayer/v1_21_10/spi/NMSBridgeImpl.class \
             io/github/hello09x/fakeplayer/v1_21_11/spi/NMSBridgeImpl.class \
             io/github/hello09x/fakeplayer/v26_1_2/spi/NMSBridgeImpl.class \
             io/github/hello09x/fakeplayer/v26_2/spi/NMSBridgeImpl.class \
+            message/message.properties \
+            message/message_zh.properties \
             META-INF/LICENSE.txt \
             META-INF/NOTICE; do
             grep -Fxq "$entry" target/fakeplayer-contents.txt || {

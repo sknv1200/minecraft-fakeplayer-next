@@ -18,6 +18,8 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+  schedule:
+    - cron: '17 3 * * 1,4'
   workflow_dispatch:
 
 env:
@@ -34,11 +36,14 @@ jobs:
           java-version: 21
           distribution: temurin
 
-      - uses: actions/cache@v4
+      - name: Restore Maven dependency cache
+        uses: actions/cache@v4
         with:
-          path: ~/.m2/repository
-          key: maven-all-${{ hashFiles('.github/workflows/build.yml', '**/pom.xml') }}
-          restore-keys: maven-all-
+          path: |
+            ~/.m2/repository
+            !~/.m2/repository/org/spigotmc
+            !~/.m2/repository/io/github/hello09x/fakeplayer
+          key: maven-dependencies-${{ runner.os }}-v1
 
       - name: Restore Spigot remapped dependency cache
         id: spigot-cache
@@ -46,26 +51,50 @@ jobs:
         with:
           path: ~/.m2/repository/org/spigotmc
           key: spigot-remapped-${{ runner.os }}-v2-1.20.1-1.20.2-1.20.4-1.20.6-1.21.1-1.21.3-1.21.4-1.21.5-1.21.6-1.21.8-1.21.10-1.21.11
+          restore-keys: |
+            spigot-remapped-${{ runner.os }}-v2-
 
-      - name: Download BuildTools
-        run: curl -sL -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
-
-      - name: Build spigot remapped-mojang dependencies
+      - name: Verify cached spigot remapped-mojang dependencies
+        if: steps.spigot-cache.outputs.cache-hit == 'true'
         run: |
           for version in 1.20.1 1.20.2 1.20.4 1.20.6 1.21.1 1.21.3 1.21.4 1.21.5 1.21.6 1.21.8 1.21.10 1.21.11; do
+            snapshot="R0.1-SNAPSHOT"
+            [ "$version" = "1.21.11" ] && snapshot="R0.2-SNAPSHOT"
+            JAR="$HOME/.m2/repository/org/spigotmc/spigot/$version-$snapshot/spigot-$version-$snapshot-remapped-mojang.jar"
+            test -f "$JAR" || { echo "Cached dependency is missing: $JAR" >&2; exit 1; }
+          done
+
+      - name: Download BuildTools
+        if: steps.spigot-cache.outputs.cache-hit != 'true'
+        run: curl -sL -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+
+      - name: Build missing spigot remapped-mojang dependencies
+        if: steps.spigot-cache.outputs.cache-hit != 'true'
+        run: |
+          build_spigot() {
+            version="$1"
             snapshot="R0.1-SNAPSHOT"
             [ "$version" = "1.21.11" ] && snapshot="R0.2-SNAPSHOT"
             D="$HOME/.m2/repository/org/spigotmc/spigot/$version-$snapshot"
             JAR="$D/spigot-$version-$snapshot-remapped-mojang.jar"
             if [ -f "$JAR" ]; then
               echo "[skip] spigot $version (cached)"
-            else
-              echo "[build] spigot $version"
-              rm -f "$D"/*.lastUpdated
-              java -jar BuildTools.jar --rev $version --remapped
-              test -f "$JAR" || { echo "BuildTools did not install $JAR" >&2; exit 1; }
+              return
             fi
-          done
+
+            echo "[build] spigot $version"
+            rm -f "$D"/*.lastUpdated
+            work="$RUNNER_TEMP/buildtools-$version"
+            mkdir -p "$work"
+            (
+              cd "$work"
+              java -jar "$GITHUB_WORKSPACE/BuildTools.jar" --rev "$version" --remapped
+            )
+            test -f "$JAR" || { echo "BuildTools did not install $JAR" >&2; exit 1; }
+          }
+          export -f build_spigot
+          printf '%s\n' 1.20.1 1.20.2 1.20.4 1.20.6 1.21.1 1.21.3 1.21.4 1.21.5 1.21.6 1.21.8 1.21.10 1.21.11 \
+            | xargs -n 1 -P 3 bash -c 'build_spigot "$1"' _
 
       - name: Save Spigot remapped dependency cache
         if: steps.spigot-cache.outputs.cache-hit != 'true'

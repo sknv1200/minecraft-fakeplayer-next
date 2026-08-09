@@ -1,9 +1,10 @@
 <!--
-  Modified by yigemingzii, July 2026
+  Modified by yigemingzii, August 2026
   - Added original-project attribution linking to tanyaofei/minecraft-fakeplayer
   - Updated supported versions (1.21.11 and 26.2)
   - Documented the CommandAPI 11.2.0 requirement for Minecraft 26.1.x
   - Clarified licensing and attribution
+  - Documented the fake player inventory GUI
 -->
 # Minecraft FakePlayer Next - 假人插件
 
@@ -29,7 +30,8 @@
 2. 大部份命令都可以对这些假人生效，因为他们对于服务器来说就是"真实的"玩家, 如 `kick`, `ban`, `res padd`。
 3. 你可以使用假人的背包来存放物品。
 4. 你可以控制假人执行一些动作比如: 跳跃、攻击、进食、睡觉等等。不仅如此，你还可以将这些行为设置为周期性的。
-5. 发挥你的想象～
+5. 你可以通过 Bukkit 背包 GUI 快速执行常用的假人操作。
+6. 发挥你的想象～
 
 ## 前置插件:
 
@@ -43,6 +45,8 @@
 
 | 命令            | 作用        | 权限                           | 备注                      |
 |---------------|-----------|------------------------------|-------------------------|
+| /fp           | 打开假人控制界面 | fakeplayer.command.spawn     | `/fakeplayer` 效果相同       |
+| /fp gui       | 打开假人控制界面 | fakeplayer.command.spawn     |                         |
 | /fp spawn     | 召唤假人      | fakeplayer.command.spawn     |                         |
 | /fp kill      | 杀死假人      | fakeplayer.command.kill      |                         |
 | /fp killall   | 杀死服务器所有假人 | OP                           |                         |

@@ -1,9 +1,10 @@
 <!--
-  Modified by yigemingzii, July 2026
+  Modified by yigemingzii, August 2026
   - Added original-project attribution linking to tanyaofei/minecraft-fakeplayer
   - Updated supported versions to include 1.21.11 and 26.2
   - Documented the CommandAPI 11.2.0 requirement for Minecraft 26.1.x
   - Clarified licensing and attribution
+  - Documented the fake player inventory GUI
 -->
 # Minecraft FakePlayer Next
 
@@ -25,6 +26,7 @@ Recent supported releases include Minecraft `1.21.10`, `1.21.11`, `26.1.2`, and 
 + Fake players can be recolonized by vanilla commands and plugin commands, such as `/ban`, `/tp`
 + You can open and edit their inventory via `/fp invsee` or Right-Clicking on them
 + You can fully control their moving, jumping, attacking... What's better ? Make it periodical
++ A Bukkit inventory GUI provides quick access to common fake player operations
 + Each player can configure his personal configuration
 
 ## Requirements
@@ -45,6 +47,8 @@ This approach can let you preview new content when you are upgrading it.
 
 | Command       | Description                               | Permission                   | Note                                                            |
 |---------------|-------------------------------------------|------------------------------|-----------------------------------------------------------------|
+| /fp           | Open the fake player control GUI          | fakeplayer.command.spawn     | `/fakeplayer` has the same effect                               |
+| /fp gui       | Open the fake player control GUI          | fakeplayer.command.spawn     |                                                                 |
 | /fp spawn     | Spawn a fake player                       | fakeplayer.command.spawn     |                                                                 |
 | /fp kill      | Kill a fake player                        | fakeplayer.command.kill      |                                                                 |
 | /fp killall   | Kill all fake players on the server       | OP                           |                                                                 |

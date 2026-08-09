@@ -18,6 +18,8 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+  schedule:
+    - cron: '17 3 * * 1,4'
   workflow_dispatch:
 
 env:
@@ -92,7 +94,7 @@ jobs:
           }
           export -f build_spigot
           printf '%s\n' 1.20.1 1.20.2 1.20.4 1.20.6 1.21.1 1.21.3 1.21.4 1.21.5 1.21.6 1.21.8 1.21.10 1.21.11 \
-            | xargs -n 1 -P 2 bash -c 'build_spigot "$1"' _
+            | xargs -n 1 -P 3 bash -c 'build_spigot "$1"' _
 
       - name: Save Spigot remapped dependency cache
         if: steps.spigot-cache.outputs.cache-hit != 'true'

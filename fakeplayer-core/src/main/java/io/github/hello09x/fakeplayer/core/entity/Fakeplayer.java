@@ -1,3 +1,7 @@
+/*
+ * Modified by yigemingzii, August 2026
+ * - Registered 26.x fake channels across PacketEvents copies
+ */
 package io.github.hello09x.fakeplayer.core.entity;
 
 import io.github.hello09x.devtools.command.exception.CommandException;
@@ -6,6 +10,7 @@ import io.github.hello09x.devtools.core.utils.SchedulerUtils;
 import io.github.hello09x.devtools.core.utils.WorldUtils;
 import io.github.hello09x.fakeplayer.api.spi.*;
 import io.github.hello09x.fakeplayer.core.Main;
+import io.github.hello09x.fakeplayer.core.compat.PacketEventsCompat;
 import io.github.hello09x.fakeplayer.core.config.FakeplayerConfig;
 import io.github.hello09x.fakeplayer.core.config.PreventKicking;
 import io.github.hello09x.fakeplayer.core.constant.MetadataKeys;
@@ -129,6 +134,9 @@ public class Fakeplayer {
                     }
                 })
                 .thenComposeAsync(nul -> SchedulerUtils.runTask(Main.getInstance(), () -> {
+                    this.network = bridge.createNetwork(address);
+                    PacketEventsCompat.registerFakeChannel(this.uuid, this.network.getChannel());
+
                     {
                         var event = this.callLoginEvent(address);
                         if (event.getResult() != PlayerLoginEvent.Result.ALLOWED && config.getPreventKicking().ordinal() < PreventKicking.ON_SPAWNING.ordinal()) {
@@ -163,7 +171,7 @@ public class Fakeplayer {
                         autofishManager.setAutofish(player, true);
                     }
 
-                    this.network = bridge.createNetwork(address);
+                    PacketEventsCompat.registerFakeChannel(this.uuid, this.network.getChannel());
                     this.network.placeNewPlayer(Bukkit.getServer(), this.player);
                     this.player.setHealth(Optional.ofNullable(this.player.getAttribute(Attributes.maxHealth()))
                                                   .map(AttributeInstance::getValue)
@@ -174,7 +182,12 @@ public class Fakeplayer {
 
                     this.teleportToSpawnpoint(option.spawnAt().clone());
                     this.ticker.runTaskTimer(Main.getInstance(), 0, 1);
-                }));
+                }))
+                .whenComplete((ignored, failure) -> {
+                    if (failure != null) {
+                        PacketEventsCompat.unregisterFakeChannel(this.uuid);
+                    }
+                });
     }
 
     /**

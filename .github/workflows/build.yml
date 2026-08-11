@@ -23,7 +23,7 @@ on:
   workflow_dispatch:
 
 env:
-  REVISION: 0.4.2
+  REVISION: 0.4.3
 
 jobs:
   build:

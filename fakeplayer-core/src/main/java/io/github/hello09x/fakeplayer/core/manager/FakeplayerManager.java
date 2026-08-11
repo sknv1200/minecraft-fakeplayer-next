@@ -1,3 +1,7 @@
+/*
+ * Modified by yigemingzii, August 2026
+ * - Removed PacketEvents fake-channel registrations during cleanup
+ */
 package io.github.hello09x.fakeplayer.core.manager;
 
 import com.google.inject.Inject;
@@ -9,6 +13,7 @@ import io.github.hello09x.fakeplayer.api.spi.ActionSetting;
 import io.github.hello09x.fakeplayer.api.spi.ActionType;
 import io.github.hello09x.fakeplayer.api.spi.NMSBridge;
 import io.github.hello09x.fakeplayer.core.Main;
+import io.github.hello09x.fakeplayer.core.compat.PacketEventsCompat;
 import io.github.hello09x.fakeplayer.core.config.FakeplayerConfig;
 import io.github.hello09x.fakeplayer.core.constant.MetadataKeys;
 import io.github.hello09x.fakeplayer.core.entity.Fakeplayer;
@@ -255,6 +260,7 @@ public class FakeplayerManager {
      * @param target 假人
      */
     public void cleanup(@NotNull Player target) {
+        PacketEventsCompat.unregisterFakeChannel(target.getUniqueId());
         var fakeplayer = this.playerList.removeByUUID(target.getUniqueId());
         if (fakeplayer == null) {
             return;

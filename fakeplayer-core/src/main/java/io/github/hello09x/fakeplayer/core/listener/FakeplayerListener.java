@@ -1,3 +1,8 @@
+/*
+ * Modified by yigemingzii, August 2026
+ * - Protected spawning fake players before Bukkit reports them online
+ * - Applied spawning kick protection after lower-priority plugin listeners
+ */
 package io.github.hello09x.fakeplayer.core.listener;
 
 import com.google.inject.Inject;
@@ -76,11 +81,17 @@ public class FakeplayerListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void preventKicking(@NotNull PlayerKickEvent event) {
         var player = event.getPlayer();
+        var spawnAt = MetadataUtils
+                .find(Main.getInstance(), player, MetadataKeys.SPAWNED_AT, Integer.class)
+                .map(MetadataValue::asInt)
+                .orElse(null);
+        var spawning = spawnAt != null && Bukkit.getCurrentTick() - spawnAt < 20;
 
-        if (manager.isNotFake(event.getPlayer())) {
+        // isFake() checks Player#isOnline and can remove a fake player that is still joining.
+        if (!spawning && manager.isNotFake(player)) {
             return;
         }
 
@@ -90,11 +101,7 @@ public class FakeplayerListener implements Listener {
 
         switch (config.getPreventKicking()) {
             case ON_SPAWNING -> {
-                var spawnAt = MetadataUtils
-                        .find(Main.getInstance(), player, MetadataKeys.SPAWNED_AT, Integer.class)
-                        .map(MetadataValue::asInt)
-                        .orElse(null);
-                if (spawnAt != null && Bukkit.getCurrentTick() - spawnAt < 20) {
+                if (spawning) {
                     event.setCancelled(true);
                     log.warning(String.format(
                             "Canceled kicking fake player '%s' on spawning due to your configuration",

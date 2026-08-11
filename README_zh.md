@@ -5,6 +5,7 @@
   - Documented the CommandAPI 11.2.0 requirement for Minecraft 26.1.x
   - Clarified licensing and attribution
   - Documented the fake player inventory GUI
+  - Documented PacketEvents spawn-kick protection
 -->
 # Minecraft FakePlayer Next - 假人插件
 
@@ -184,6 +185,16 @@ _此外，假人是一个模拟玩家，因此可以被任何指令所识别比�
 2. 不建议直接给玩家 `fakeplayer.command.cmd` 权限，这样玩家可以执行任何假人有权限的命令。建议通过配置文件加入白名单命令来允许玩家执行有限的命令
 
 # 常见问题（很重要务必要看）
+
+## 创建假人时提示 PacketEvents failed to inject into a channel
+
+从 `0.4.3` 开始，默认的 `prevent-kicking: ON_SPAWNING` 可以可靠保护登录阶段的假人。
+如果其他插件仍在假人生成完成后将其踢出，可以使用 `ALWAYS` 作为范围更广的兼容方案：
+
+```yaml
+# config.yml
+prevent-kicking: ALWAYS
+```
 
 ## 假人不吸引仇恨
 

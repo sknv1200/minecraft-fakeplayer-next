@@ -27,11 +27,18 @@ import java.net.InetAddress;
 
 public class FakeConnection extends Connection {
 
+    private final FakeChannel fakeChannel;
+
     public FakeConnection(@NotNull InetAddress address) {
         super(PacketFlow.SERVERBOUND);
-        this.channel = new FakeChannel(null, address);
+        this.fakeChannel = new FakeChannel(null, address);
+        this.channel = this.fakeChannel;
         this.address = this.channel.remoteAddress();
         Connection.configureSerialization(this.channel.pipeline(), PacketFlow.SERVERBOUND, false, null);
+    }
+
+    public @NotNull FakeChannel getChannel() {
+        return this.fakeChannel;
     }
 
     @Override

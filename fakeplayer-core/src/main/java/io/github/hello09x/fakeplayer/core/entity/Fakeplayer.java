@@ -1,6 +1,6 @@
 /*
  * Modified by yigemingzii, August 2026
- * - Registered and diagnosed 26.x fake channels across PacketEvents copies
+ * - Registered 26.x fake channels across PacketEvents copies
  */
 package io.github.hello09x.fakeplayer.core.entity;
 
@@ -173,7 +173,6 @@ public class Fakeplayer {
 
                     PacketEventsCompat.registerFakeChannel(this.uuid, this.network.getChannel());
                     this.network.placeNewPlayer(Bukkit.getServer(), this.player);
-                    PacketEventsCompat.diagnoseFakePlayer(this.player, this.network.getChannel());
                     this.player.setHealth(Optional.ofNullable(this.player.getAttribute(Attributes.maxHealth()))
                                                   .map(AttributeInstance::getValue)
                                                   .orElse(20D));    // 恢复生命值

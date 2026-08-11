@@ -1,8 +1,13 @@
+/*
+ * Modified by yigemingzii, August 2026
+ * - Exposed optional fake channels for packet library compatibility
+ */
 package io.github.hello09x.fakeplayer.api.spi;
 
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface NMSNetwork {
 
@@ -20,5 +25,14 @@ public interface NMSNetwork {
      */
     @NotNull
     NMSServerGamePacketListener getServerGamePacketListener() throws IllegalStateException;
+
+    /**
+     * 获取底层虚拟 Channel，用于兼容需要识别假连接的网络插件。
+     *
+     * @return 当前版本未公开 Channel 时返回 {@code null}
+     */
+    default @Nullable Object getChannel() {
+        return null;
+    }
 
 }

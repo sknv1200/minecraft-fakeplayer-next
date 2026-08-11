@@ -34,6 +34,10 @@ public class FakeConnection extends Connection {
         Connection.configureSerialization(this.channel.pipeline(), PacketFlow.SERVERBOUND, false, null);
     }
 
+    public @NotNull FakeChannel getChannel() {
+        return (FakeChannel) this.channel;
+    }
+
     @Override
     public boolean isConnected() {
         return super.isConnected();

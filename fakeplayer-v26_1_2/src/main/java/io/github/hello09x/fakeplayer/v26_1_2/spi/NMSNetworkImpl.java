@@ -38,6 +38,11 @@ public class NMSNetworkImpl implements NMSNetwork {
     }
 
     @Override
+    public @NotNull Object getChannel() {
+        return this.connection.getChannel();
+    }
+
+    @Override
     public NMSServerGamePacketListener placeNewPlayer(
             @NotNull Server server, @NotNull Player player
     ) {

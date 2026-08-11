@@ -1,6 +1,7 @@
 /*
  * Modified by yigemingzii, August 2026
  * - Protected spawning fake players before Bukkit reports them online
+ * - Applied spawning kick protection after lower-priority plugin listeners
  */
 package io.github.hello09x.fakeplayer.core.listener;
 
@@ -80,7 +81,7 @@ public class FakeplayerListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void preventKicking(@NotNull PlayerKickEvent event) {
         var player = event.getPlayer();
         var spawnAt = MetadataUtils

@@ -28,6 +28,9 @@ import java.util.UUID;
 public final class PacketEventsCompat {
 
     private static final String PACKET_EVENTS_CLASS = "com.github.retrooper.packetevents.PacketEvents";
+    private static final String PACKET_EVENTS_API_CLASS = "com.github.retrooper.packetevents.PacketEventsAPI";
+    private static final String PROTOCOL_MANAGER_CLASS =
+            "com.github.retrooper.packetevents.manager.protocol.ProtocolManager";
 
     private PacketEventsCompat() {
     }
@@ -54,13 +57,16 @@ public final class PacketEventsCompat {
         }
 
         try {
-            var packetEvents = plugin.getClass().getClassLoader().loadClass(PACKET_EVENTS_CLASS);
+            var classLoader = plugin.getClass().getClassLoader();
+            var packetEvents = classLoader.loadClass(PACKET_EVENTS_CLASS);
+            var packetEventsApi = classLoader.loadClass(PACKET_EVENTS_API_CLASS);
+            var protocolManagerApi = classLoader.loadClass(PROTOCOL_MANAGER_CLASS);
             var api = packetEvents.getMethod("getAPI").invoke(null);
             if (api == null) {
                 return;
             }
-            var protocolManager = api.getClass().getMethod("getProtocolManager").invoke(api);
-            protocolManager.getClass().getMethod(method, parameterTypes).invoke(protocolManager, arguments);
+            var protocolManager = packetEventsApi.getMethod("getProtocolManager").invoke(api);
+            protocolManagerApi.getMethod(method, parameterTypes).invoke(protocolManager, arguments);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException e) {
             Main.getInstance().getLogger().warning("PacketEvents compatibility call failed: " + e);
         } catch (InvocationTargetException e) {

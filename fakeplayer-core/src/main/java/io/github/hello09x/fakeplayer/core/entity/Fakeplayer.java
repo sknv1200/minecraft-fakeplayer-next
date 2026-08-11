@@ -1,6 +1,6 @@
 /*
  * Modified by yigemingzii, August 2026
- * - Registered 26.x fake channels with PacketEvents before login
+ * - Registered 26.x fake channels with all PacketEvents copies during login
  */
 package io.github.hello09x.fakeplayer.core.entity;
 
@@ -171,6 +171,7 @@ public class Fakeplayer {
                         autofishManager.setAutofish(player, true);
                     }
 
+                    PacketEventsCompat.registerFakeChannel(this.uuid, this.network.getChannel());
                     this.network.placeNewPlayer(Bukkit.getServer(), this.player);
                     this.player.setHealth(Optional.ofNullable(this.player.getAttribute(Attributes.maxHealth()))
                                                   .map(AttributeInstance::getValue)

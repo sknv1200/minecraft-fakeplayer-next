@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Modified by yigemingzii, July 2026 for Minecraft 26.2 support.
+ * Modified by yigemingzii, August 2026 for Minecraft 26.2 and ProtocolLib support.
  */
 package io.github.hello09x.fakeplayer.v26_2.network;
 
@@ -29,15 +29,18 @@ import java.net.InetAddress;
 
 public class FakeConnection extends Connection {
 
+    private final FakeChannel fakeChannel;
+
     public FakeConnection(@NotNull InetAddress address) {
         super(PacketFlow.SERVERBOUND);
-        this.channel = new FakeChannel(null, address);
+        this.fakeChannel = new FakeChannel(null, address);
+        this.channel = this.fakeChannel;
         this.address = this.channel.remoteAddress();
         Connection.configureSerialization(this.channel.pipeline(), PacketFlow.SERVERBOUND, false, null);
     }
 
     public @NotNull FakeChannel getChannel() {
-        return (FakeChannel) this.channel;
+        return this.fakeChannel;
     }
 
     @Override

@@ -5,6 +5,7 @@
   - Documented the CommandAPI 11.2.0 requirement for Minecraft 26.1.x
   - Clarified licensing and attribution
   - Documented the fake player inventory GUI
+  - Documented PacketEvents spawn-kick protection
 -->
 # Minecraft FakePlayer Next
 
@@ -187,9 +188,10 @@ If your server does not restrict various player commands, you can use this direc
 
 # FAQs
 
-## xxx lost connection: PacketEvents 2.0 failed to inject
+## xxx lost connection: PacketEvents failed to inject into a channel
 
-Some plugin changes the `Connection` of the fake player, You can set `prevent-kicking` to `ALWAYS` to solve it.
+Since `0.4.3`, the default `prevent-kicking: ON_SPAWNING` reliably protects fake players from this error during login.
+If another plugin continues to kick fake players after they have spawned, you can use `ALWAYS` as a broader compatibility workaround:
 
 ```yaml
 # config.yml

@@ -58,31 +58,12 @@
         <url>https://github.com/yigemingzii/minecraft-fakeplayer-next</url>
     </scm>
 
-    <modules>
-        <module>fakeplayer-api</module>
-        <module>fakeplayer-core</module>
-        <module>fakeplayer-dist</module>
-        <module>fakeplayer-v1_20_1</module>
-        <module>fakeplayer-v1_20_2</module>
-        <module>fakeplayer-v1_20_3</module>
-        <module>fakeplayer-v1_20_4</module>
-        <module>fakeplayer-v1_20_5</module>
-        <module>fakeplayer-v1_20_6</module>
-        <module>fakeplayer-v1_21</module>
-        <module>fakeplayer-v1_21_1</module>
-        <module>fakeplayer-v1_21_3</module>
-        <module>fakeplayer-v1_21_4</module>
-        <module>fakeplayer-v1_21_5</module>
-        <module>fakeplayer-v1_21_6</module>
-        <module>fakeplayer-v1_21_7</module>
-        <module>fakeplayer-v1_21_8</module>
-        <module>fakeplayer-v1_21_9</module>
-        <module>fakeplayer-v1_21_10</module>
-        <module>fakeplayer-v1_21_11</module>
-        <module>fakeplayer-v26_1_2</module>
-        <module>fakeplayer-v26_2</module>
-    </modules>
-
+<modules>
+    <module>fakeplayer-api</module>
+    <module>fakeplayer-core</module>
+    <module>fakeplayer-v1_21_11</module>
+    <module>fakeplayer-dist</module>
+</modules>
     <properties>
         <java.version>21</java.version>
         <maven.compiler.proc>full</maven.compiler.proc>

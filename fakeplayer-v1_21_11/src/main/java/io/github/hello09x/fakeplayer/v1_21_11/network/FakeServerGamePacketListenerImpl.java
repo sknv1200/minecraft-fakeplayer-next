@@ -25,16 +25,21 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
 import net.minecraft.network.protocol.common.custom.DiscardedPayload;
+import net.minecraft.network.protocol.game.ClientboundContainerSetContentPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.item.ItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -69,11 +74,37 @@ public class FakeServerGamePacketListenerImpl extends ServerGamePacketListenerIm
 
     @Override
     public void send(Packet<?> packet) {
+        // ========== 新增：拦截背包数据包，截断物品列表防止越界 ==========
+        if (packet instanceof ClientboundContainerSetContentPacket containerPacket) {
+            try {
+                // 通过反射获取内部 items 字段
+                Field itemsField = ClientboundContainerSetContentPacket.class.getDeclaredField("items");
+                itemsField.setAccessible(true);
+                List<ItemStack> items = (List<ItemStack>) itemsField.get(containerPacket);
+                
+                // 假人背包最大槽位数（默认为72，如果容器大小不同可调整）
+                int maxSize = 72;
+                if (items.size() > maxSize) {
+                    // 截断列表，保留前 maxSize 个物品
+                    List<ItemStack> newItems = new ArrayList<>(items.subList(0, maxSize));
+                    itemsField.set(containerPacket, newItems);
+                    log.info("Truncated container items from " + items.size() + " to " + maxSize);
+                }
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                log.warning("Failed to truncate container packet: " + e.getMessage());
+                // 如果反射失败，仍然发送原包（可能仍会崩溃，但已尽力）
+            }
+            // 发送修改后的数据包（可能被截断）
+            super.send(packet);
+            return;
+        }
+        // ========== 原有特殊包处理（保持不变） ==========
         if (packet instanceof ClientboundCustomPayloadPacket p) {
             this.handleCustomPayloadPacket(p);
         } else if (packet instanceof ClientboundSetEntityMotionPacket p) {
             this.handleClientboundSetEntityMotionPacket(p);
         }
+        // 其余数据包忽略（符合原插件设计）
     }
 
     /**
@@ -129,5 +160,4 @@ public class FakeServerGamePacketListenerImpl extends ServerGamePacketListenerIm
             }
         }
     }
-
 }

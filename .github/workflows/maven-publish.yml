@@ -1,0 +1,34 @@
+#此工作流将使用Maven构建包，然后在创建发布时将其发布到GitHub包
+Maven包
+
+github.token
+
+在……之上：:
+释放：:
+类型：[已创建]: [创造]
+
+作业：:
+建立：:
+
+run-on:ubuntu-latest: Ubuntu-最新
+权限：:
+内容：已读: 读
+包：写入: 写
+
+步骤：:
+-使用：操作/结帐@v4uses: 操作/结帐@v4
+-名称：设置JDK11name: 设置JDK11
+用法：操作/setup-java@v4: 操作/设置-Java@v4
+和……一起：:
+java版本："11": '11'
+分布：'铁木林: 'temurin'
+server-id:github#pom.xml的distributionManagement/存储库/id字段的值: GitHub#pom.xml的distributionManagement/repository/id字段的值
+settings-path:settings.xml文件的${{github.workspace}}#位置: ${{github.workspace}} #settings.xml文件的位置
+
+-名称：使用Maven构建名称: 使用Maven构建
+运行：mvn-B包--文件pom.xml: mvn-B包--文件pom.xml
+
+-名称：发布到GitHub包Apache Mavenname: 发布到GitHub包Apache Maven
+运行：mvn deploy-s$GITHUB_WORKSPACE/settings.xml: mvn deploy-s$GITHUB_WORKSPACE/settings.xml
+env：:
+GitHub_TOKEN：${{github.token}}: ${{github.token}}
